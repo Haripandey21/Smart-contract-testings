@@ -24,7 +24,7 @@ contract tokentest{
         users[to]+=amt;
     }
 
-    function fetchbalance(address addr) external returns(uint )
+    function fetchbalance(address addr) external view  returns(uint )
     {
         return users[addr];
     }
