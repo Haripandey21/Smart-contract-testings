@@ -359,10 +359,64 @@ describe("test1 contract checking ", function () {
   });
 ```
 --------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------
+------------------------------------------------e 2 ---------------------------------------------------------
 ```bash
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+
+contract test1 {
+	
+	uint[] public data = [10, 20, 30, 40, 50];
+		
+	function array_push() public returns (uint[] memory){
+	
+		data.push(60);
+		data.push(70);
+		data.push(80);
+	
+		return data;
+	}
+
+
+  function push(uint num) public returns(uint[] memory)
+  {
+      data.push(num);
+      return data;
+
+  }
+    function pop() public 
+  {
+      data.pop();
+  }
+}
+ 
 ```
 ```bash 
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+describe("test1 contract checking ", function () {
+    let test;
+    let dtest;
+    let owner; 
+  
+    beforeEach(async function () {
+      [owner]= await ethers.getSigners(); 
+      test = await ethers.getContractFactory("test1");     
+      dtest = await test.deploy();
+    });
+
+    describe("Deployment of contract...", function () {
+      it("data  checking... ", async function () {  
+       
+        
+        expect(await dtest.data[0]).to.equal(30);
+      });
+            
+    });
+      
+  });
 ```
 --------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------
