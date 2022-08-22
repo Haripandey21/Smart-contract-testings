@@ -292,10 +292,71 @@ describe("test1 contract checking ", function () {
   });
 ```
 --------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------
+---------------------------------------error faced ------------------------------------------------------------
 ```bash
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9; 
+
+
+contract test1 {
+       address public owner=msg.sender;
+    enum examresult {
+        pass,
+        fail,
+        notchecked
+    }
+examresult public exam=examresult.notchecked;
+modifier onlyteacher{
+    require(owner==msg.sender,"only teacher can change the result");
+    _;
+}
+function checkresult(uint num1) public returns(string memory)
+{
+    require(num1<100, 'number must be less than 100');
+    exam= num1>=40 ? examresult.pass : examresult.fail;
+
+    if (exam == examresult.pass) {
+        return 'Pass';
+    } else {
+        return 'Fail';        
+    }
+}
+function ChangePass() public onlyteacher 
+{
+    exam=examresult.pass;
+
+}
+function ChangeFail() public onlyteacher 
+{
+    exam=examresult.fail;
+
+}
+}
 ```
-```bash 
+```bash
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+describe("test1 contract checking ", function () {
+    let test;
+    let dtest;
+    let owner; 
+  
+    beforeEach(async function () {
+      [owner]= await ethers.getSigners(); 
+      test = await ethers.getContractFactory("test1");     
+      dtest = await test.deploy();
+    });
+
+    describe("Deployment of contract...", function () {
+      it("checkresult function checking... ", async function () {  
+        
+        expect(await dtest.checkresult(90)).to.equal("Pass");
+      });
+            
+    });
+      
+  });
 ```
 --------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------
